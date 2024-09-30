@@ -25,22 +25,49 @@ def generate_launch_description():
     # Create a robot_state_publisher node
     params = {'robot_description': robot_description_config, 'use_sim_time': use_sim_time}
 
-    left_wheel_tf2_node = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        name='tf2_ros',
-        output='screen',
-        arguments=['0', '0.1485', '0', '0', '0', '-1.570795', 'base_link', 'left_wheel']
-    )
+    # left_wheel_tf2_node = Node(
+    #     package='tf2_ros',
+    #     executable='static_transform_publisher',
+    #     name='tf2_ros_left_wheel',
+    #     output='screen',
+    #     arguments=['0', '0.1485', '0', '0', '0', '-1.570795', 'base_link', 'left_wheel']
+    # )
 
-    right_wheel_tf2_node = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        name='tf2_ros',
-        output='screen',
-        arguments=['0', '0.1485', '0', '0', '0', '-1.570795', 'base_link', 'right_wheel']
+    # right_wheel_tf2_node = Node(
+    #     package='tf2_ros',
+    #     executable='static_transform_publisher',
+    #     name='tf2_ros_right_wheel',
+    #     output='screen',
+    #     arguments=['0', '-0.1485', '0', '0', '0', '-1.570795', 'base_link', 'right_wheel']
         
-    )
+    # )
+
+    # chassie_tf2_node = Node(
+    #     package='tf2_ros',
+    #     executable='static_transform_publisher',
+    #     name='tf2_ros_chassie',
+    #     output='screen',
+    #     arguments=['-0.226', '0', '-0.01', '0', '0', '0', 'base_link', 'chassis']
+        
+    # )
+
+    # base_footprint_tf2_node = Node(
+    #     package='tf2_ros',
+    #     executable='static_transform_publisher',
+    #     name='tf2_ros_chassie',
+    #     output='screen',
+    #     arguments=['0', '0', '0.033', '0', '0', '0', 'base_footprint', 'base_link']
+        
+    # )
+
+    # caster_wheel_tf2_node = Node(
+    #     package='tf2_ros',
+    #     executable='static_transform_publisher',
+    #     name='tf2_ros_chassie',
+    #     output='screen',
+    #     arguments=['0.075', '0', '-0.013', '0', '0', '0', 'chassis', 'caster_wheel']
+        
+    # )
 
     node_robot_state_publisher = Node(
         package='robot_state_publisher',
@@ -63,6 +90,13 @@ def generate_launch_description():
         output='screen'
     )
 
+    joint_state_publisher_gui_node = Node(
+        package='joint_state_publisher_gui',
+        executable='joint_state_publisher_gui',
+        name='joint_state_publisher_gui',
+        output='screen'
+    )
+
 
     # Launch!
     return LaunchDescription([
@@ -78,6 +112,10 @@ def generate_launch_description():
         node_robot_state_publisher,
         spawn_joint_state_broadcaster,
         rviz_node,
-        left_wheel_tf2_node,
-        right_wheel_tf2_node
+        # left_wheel_tf2_node,
+        # right_wheel_tf2_node
+        # caster_wheel_tf2_node,
+        # chassie_tf2_node,
+        # base_footprint_tf2_node
+        joint_state_publisher_gui_node
     ])
