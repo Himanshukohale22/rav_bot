@@ -76,24 +76,17 @@ def generate_launch_description():
         parameters=[params]
     )
     
-    spawn_joint_state_broadcaster = Node(
-        package='controller_manager',
-        executable='spawner',
-        arguments=['joint_state_broadcaster', '-c', '/controller_manager'],
-        output='screen',
+    joint_state_publisher_gui_node = Node(
+        package='joint_state_publisher_gui',
+        executable='joint_state_publisher_gui',
+        name='joint_state_publisher_gui',
+        output='screen'
     )
 
     rviz_node = Node(
         package='rviz2',
         executable='rviz2',
         name='rviz2',
-        output='screen'
-    )
-
-    joint_state_publisher_gui_node = Node(
-        package='joint_state_publisher_gui',
-        executable='joint_state_publisher_gui',
-        name='joint_state_publisher_gui',
         output='screen'
     )
 
@@ -110,7 +103,6 @@ def generate_launch_description():
             description='Use ros2_control if true'),
 
         node_robot_state_publisher,
-        spawn_joint_state_broadcaster,
         rviz_node,
         # left_wheel_tf2_node,
         # right_wheel_tf2_node

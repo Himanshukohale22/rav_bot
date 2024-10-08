@@ -7,7 +7,7 @@ from ament_index_python import get_package_share_directory
 from launch_ros.actions import Node
     
 
-def get_launch_description():
+def generate_launch_description():
 
     pkg_path = get_package_share_directory('rav_bot')
 

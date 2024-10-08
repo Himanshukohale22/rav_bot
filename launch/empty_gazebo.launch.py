@@ -1,56 +1,57 @@
-## launching gazebo and rviz template 
-
+#!/usr/bin/python3
 import os
-from launch import LaunchDescription
-from launch_ros.actions import Node
-from launch.actions import IncludeLaunchDescription
-from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 from ament_index_python.packages import get_package_share_directory
 
-
+from launch import LaunchDescription
+from launch.actions import IncludeLaunchDescription
+from launch_ros.actions import Node
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 def generate_launch_description():
 
-    pkg_path = get_package_share_directory('rav_bot')
-
-    robot_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(pkg_path,'launch','robot.launch.py')
-    )
-
-    gazebo_pkg = get_package_share_directory('gazebo_ros')
-
-    gzserver = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join[gazebo_pkg,'launch','gzserver.launch.py'],
-        )
-    )
-
-    gzclient = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(gazebo_pkg,'launch','gzclient.launch.py')
-        )
-    )
+    pkg_path = os.path.join('rav_bot')
+    
+    urdf_file = os.path.join(get_package_share_directory(pkg_path),'urdf','robot.urdf.xacro')
 
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
         name='robot_state_publisher',
-        output='screen'
-    )
-
-    spawn_entity_node = Node(
-        package='spawn_enity',
-        executable= 'spawn_enity',
-        name='spawn_entity',
         output='screen',
-        parameters=''
+        arguments=[urdf_file]
+    )
+    
+    gazebo_node = Node(
+            package='gazebo_ros',
+            executable='gazebo',
+            name='gazebo',
+            output='screen',
+            arguments=['--verbose', '-s', 'libgazebo_ros_factory.so']  # Factory plugin allows model spawning
+        ),
+
+    spawn_robot = Node(
+        package='gazebo_ros',
+        executable='spawn_entity.py',
+        name='spwan_entity',
+        output='screen',
+        arguments=[
+            '-topic', '/robot_description',
+            '-entity', 'my_robot',  # Using formatted string for entity name
+            '-z', '0.28',
+            '-x', '0',
+            '-y', '0',
+            '-Y', '0'
+        ]
     )
 
-    return LaunchDescription(
-        robot_launch,
-        gzserver,
-        gzclient,
+
+    return LaunchDescription([
+
+        # rsp,
+        # rviz_launch,
         robot_state_publisher_node,
-        spawn_entity_node
-    )
+        gazebo_node,
+        spawn_robot
+        
+    ])
