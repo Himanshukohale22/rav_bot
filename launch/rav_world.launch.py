@@ -8,25 +8,36 @@ from launch_ros.actions import Node
     
 
 def get_launch_description():
-    
-    rav_bot_rviz = IncludeLaunchDescription(
+
+    pkg_path = get_package_share_directory('rav_bot')
+
+    gazebo_pkg = get_package_share_directory('gazebo_ros')
+
+    world_path = os.path.join(pkg_path,'worlds','clearpath_playpen.world')
+
+    gzserver_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(pkg_path,'launch/robot.launch.py')
+            os.path.join(gazebo_pkg,'launch','gzserver.launch.py'),
         )
     )
 
-    world_file = PathJoinSubstitution(
-        [FindPackageShare(pkg_path),
-        "worlds",
-        "clearpath_playpen.world"],
+    gzclient_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(gazebo_pkg,'launch','gzclient.launch.py')
+
+        )
     )
-    
-    robot_world = Node(
-        package='',
-        executable='/* exec_name */',
-        name='/* node_name */',
-        output='screen'),
+
+    spawn_robot = Node(
+        package="gazebo_ros",
+        executable="spawn_entity.py",
+        arguments=["-topic", "robot_description", "-entity", "rav_bot", "-x", "0.0", "-y", "0.0", "-z", "0.0"],
+        output="screen")
 
     return LaunchDescription([
-        robot_world
+        
+        spawn_robot,
+        gzserver_cmd,
+        gzclient_cmd,
+
     ])

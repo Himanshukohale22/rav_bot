@@ -12,16 +12,18 @@ from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
 
-    gazebo_pkg = get_package_share_directory('gazebo_ros')
+    pkg_path = get_package_share_directory('rav_bot')
 
-    # world_path = os.path.join(get_package_share_directory())
+    robot_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(pkg_path,'launch','robot.launch.py')
+    )
+
+    gazebo_pkg = get_package_share_directory('gazebo_ros')
 
     gzserver = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join[gazebo_pkg,'launch','gzserver.launch.py'],
-
         )
-
     )
 
     gzclient = IncludeLaunchDescription(
@@ -46,6 +48,7 @@ def generate_launch_description():
     )
 
     return LaunchDescription(
+        robot_launch,
         gzserver,
         gzclient,
         robot_state_publisher_node,
