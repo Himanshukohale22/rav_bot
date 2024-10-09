@@ -7,8 +7,6 @@ from launch.actions import DeclareLaunchArgument
 from launch_ros.actions import Node
 import os
 
-import xacro
-
 
 def generate_launch_description():
 
