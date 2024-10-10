@@ -52,10 +52,10 @@ def generate_launch_description():
         ]
     )
 
-    gazebo_launch = ExecuteProcess(
-        cmd=['gazebo', '--verbose', '-s', 'libgazebo_ros_factory.so'],
-        output='screen'
-    )
+    # gazebo_launch = ExecuteProcess(
+    #     cmd=['gazebo', '--verbose', '-s', 'libgazebo_ros_factory.so'],
+    #     output='screen'
+    # )
 
     return LaunchDescription([
 
@@ -71,7 +71,7 @@ def generate_launch_description():
         base_footprint_tf2_node,
         gazebo_client,
         gazebo_server,
-        spawn_robot,
-        gazebo_launch,
+        spawn_robot
+        # gazebo_launch,
         
     ])
