@@ -4,13 +4,17 @@ from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch_ros.actions import Node
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from ament_index_python.packages import get_package_share_directory
+from launch.substitutions import LaunchConfiguration
+
 
 def generate_launch_description():
 
     pkg_name = get_package_share_directory('rav_bot')
     pkg_path = os.path.join(pkg_name)
 
-    rsp_file = os.path.join(pkg_path,'launch','rsp.launch.py')
+    rviz_config = os.path.join(pkg_name,'rviz','rav_bot.rviz')
+
+    rsp_file = os.path.join(pkg_name,'launch','rsp.launch.py')
 
     rsp_include = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([rsp_file])
@@ -38,6 +42,7 @@ def generate_launch_description():
         executable='rviz2',
         name='rviz2',
         output='screen'
+        # arguments=['-d', LaunchConfiguration(rviz_config)]
     )
     
     return LaunchDescription([

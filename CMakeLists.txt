@@ -12,9 +12,21 @@ find_package(ament_cmake REQUIRED)
 # find_package(<dependency> REQUIRED)
 
 
-install(DIRECTORY rviz urdf launch world 
-  DESTINATION share/${PROJECT_NAME}
+install(DIRECTORY rviz urdf launch world model script
+        DESTINATION share/${PROJECT_NAME}
 )
+
+install( DIRECTORY config/
+         DESTINATION share/${PROJECT_NAME}/config)
+         
+install(PROGRAMS script/joystick_control.py
+        DESTINATION lib/${PROJECT_NAME})
+install(PROGRAMS script/multipoint_follow.py
+        DESTINATION lib/${PROJECT_NAME})
+install(PROGRAMS script/point_follow.py
+        DESTINATION lib/${PROJECT_NAME})
+install(PROGRAMS script/ultrasonic_sensor_obstacle_avoidance.py
+        DESTINATION lib/${PROJECT_NAME})
 
 
 if(BUILD_TESTING)
