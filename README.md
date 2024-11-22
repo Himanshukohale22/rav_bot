@@ -48,53 +48,6 @@ To view in rviz,
 ```bash
 ros2 launch rav_bot rviz.launch.py
 ```
-### Configuration
-
-The launch file accepts multiple launch arguments,
-```bash
-ros2 launch bcr_bot gazebo.launch.py \
-	camera_enabled:=True \
-	two_d_lidar_enabled:=True \
-	stereo_camera_enabled:=False \
-	position_x:=0.0 \
-	position_y:=0.0 \
-	orientation_yaw:=0.0 \
-	odometry_source:=world \
-	world_file:=small_warehouse.sdf \
-	robot_namespace:="bcr_bot"
-```
-**Note:** To use stereo_image_proc with the stereo images excute following command: 
-```bash
-ros2 launch stereo_image_proc stereo_image_proc.launch.py left_namespace:=bcr_bot/stereo_camera/left right_namespace:=bcr_bot/stereo_camera/right
-```
-## Humble + Fortress (Ubuntu 22.04)
-
-### Dependencies
-
-In addition to ROS2 Humble and [Gazebo Fortress installations](https://gazebosim.org/docs/fortress/install_ubuntu), we need to manually install interfaces between ROS2 and Gazebo sim as follows,
-
-```bash
-sudo apt-get install ros-humble-ros-gz-sim ros-humble-ros-gz-bridge ros-humble-ros-gz-interfaces 
-```
-Remainder of the dependencies can be installed with [rosdep](http://wiki.ros.org/rosdep)
-
-```bash
-# From the root directory of the workspace. This will install everything mentioned in package.xml
-rosdep install --from-paths src --ignore-src -r -y
-```
-
-### Source Build
-
-```bash
-colcon build --packages-select bcr_bot
-```
-
-### Binary Install
-To install BCR bot in the binaries:
-
-```bash
-sudo apt-get install ros-humble-bcr-bot
-```
 
 ### Run
 
